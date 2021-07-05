@@ -1,0 +1,373 @@
+/* #000501 #1A1038 #8E7CA2 #DDBDD5 #F7F3DE */
+.main {
+    height: 100vh;
+    display: flex;
+}
+
+.main__center {
+    flex: 0.78;
+    display: flex;
+    flex-direction: column;
+}
+
+/* .main__right {
+    flex: 0.2;
+} */
+
+.main__videos {
+    flex-grow: 1;
+    background-color: #080318;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+}
+
+.main__left {
+    background-color: #1C1E20;
+}
+
+.main__right {
+    background-color: #1d2124;
+    border-left: 1px solid #3D3D42;
+    flex: 0.2;
+}
+
+.main__left {
+    color: #DDBDD5;
+    display: flex;
+    justify-content: space-between;
+    padding: 5px;
+    flex-direction: column;
+    flex: 0.02;
+}
+
+.main__controls__block {
+    display: flex;
+    flex-direction: column;
+}
+
+.main__controls__button {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 10px;
+    min-width: 80px;
+    cursor: pointer;
+}
+
+.main__controls__button:hover {
+    background-color: #343434;
+    border-radius: 5px;
+}
+
+.main__controls__button i {
+    font-size: 24px;
+}
+
+.main__right {
+    display: flex;
+    flex-direction: column;
+}
+
+.main__header {
+    padding-top: 5px;
+    color: #F5F5F5;
+    text-align: center;
+}
+
+.main__chat_window {
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+.messages {
+    color: white;
+    list-style: none;
+}
+
+.main__message_container {
+    padding: 22px 12px;
+    display: flex;
+}
+
+.main__message_container input {
+    flex-grow: 1;
+    background-color: transparent;
+    border: none;
+    color: #F5F5F5;
+}
+
+.leave_meeting {
+    color: #EB534B;
+}
+
+.unmute,
+.stop {
+    color: #CC3B33;
+}
+
+/* login */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    background: linear-gradient(to right, #b92b27, #1565c0)
+}
+
+.card {
+    margin-bottom: 20px;
+    border: none
+}
+
+.box {
+    width: 500px;
+    padding: 40px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    background: #191919;
+    ;
+    text-align: center;
+    transition: 0.25s;
+    margin-top: 100px
+}
+
+.box input[type="text"],
+.box input[type="password"] {
+    border: 0;
+    background: none;
+    display: block;
+    margin: 20px auto;
+    text-align: center;
+    border: 2px solid #3498db;
+    padding: 10px 10px;
+    width: 250px;
+    outline: none;
+    color: white;
+    border-radius: 24px;
+    transition: 0.25s
+}
+
+.box h1 {
+    color: white;
+    text-transform: uppercase;
+    font-weight: 500
+}
+
+.box input[type="text"]:focus,
+.box input[type="password"]:focus {
+    width: 300px;
+    border-color: #2ecc71
+}
+
+.box input[type="submit"] {
+    border: 0;
+    background: none;
+    display: block;
+    margin: 20px auto;
+    text-align: center;
+    border: 2px solid #2ecc71;
+    padding: 14px 40px;
+    outline: none;
+    color: white;
+    border-radius: 24px;
+    transition: 0.25s;
+    cursor: pointer
+}
+
+.box input[type="submit"]:hover {
+    background: #2ecc71
+}
+
+.section-top {
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+    background-image: url(images/img1.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    animation: slide 10s infinite;
+}
+
+@keyframes slide {
+    0% {
+        background-image: url(images/img1.jpg);
+    }
+
+    33% {
+        background-image: url(images/img5.jpg);
+    }
+
+    67% {
+        background-image: url(images/img3.jpg);
+    }
+
+}
+
+.overlay {
+    width: 100%;
+    height: 100vh;
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7));
+    position: absolute;
+    top: 0;
+}
+
+#mainHeading {
+    color: white;
+    font-family: monospace;
+}
+
+.row-fluid1 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.container-fluid {
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+
+.navbar {
+    border-radius: 0;
+    padding: 30px 0;
+    margin: 0;
+    font-size: 15px;
+    text-transform: uppercase;
+}
+
+nav {
+    padding: 0;
+    margin: 0;
+    text-decoration: none;
+    list-style: none;
+    box-sizing: border-box;
+    font-family: monsterrat;
+    height: 80px;
+    width: 100%;
+    background-color: #423052;
+
+}
+
+label.brand {
+    color: white;
+    font-size: 35px;
+    line-height: 80px;
+    padding: 0 100px;
+    font-weight: bold;
+}
+
+nav #ulNav {
+    float: right;
+    margin-right: 20px;
+}
+
+nav #ulNav li {
+    display: inline-block;
+    line-height: 80px;
+    color: white;
+    font-size: 17px;
+    margin: 0 5px;
+}
+
+nav #ulNav li a {
+    color: white;
+    font-size: 17px;
+    padding: 7px 13px;
+    border-radius: 3px;
+    text-transform: uppercase;
+}
+
+a.active,
+a:hover {
+    background: #1b9bff;
+    transition: .5s;
+}
+
+.checkbtn {
+    font-size: 30px;
+    color: white;
+    float: right;
+    line-height: 80px;
+    margin-right: 40px;
+    cursor: pointer;
+    display: none;
+}
+
+#check {
+    display: none;
+}
+
+@media (max-width: 952px) {
+    label.brand {
+        font-size: 30px;
+        padding-left: 50px;
+    }
+
+    nav #ulNav li a {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 858px) {
+    .checkbtn {
+        display: block;
+    }
+
+    #ulNav {
+        position: fixed;
+        width: 100%;
+        height: 100vh;
+        background: #2c3e50;
+        top: 80px;
+        left: -100%;
+        text-align: center;
+        transition: all .5s;
+    }
+
+    nav #ulNav li {
+        display: block;
+        margin: 50px 0;
+        line-height: 30px;
+    }
+
+    nav #ulNav li a {
+        font-size: 20px;
+    }
+
+    a:hover,
+    a.active {
+        background: none;
+        color: #0082e6;
+    }
+
+    #check:checked~ul {
+        left: 0;
+    }
+
+}
+
+.row {
+    align-items: center;
+}
+
+.columns {
+    align-content: center;
+}
+
+.startpage {
+    position: static;
+}
+
+#welcome {
+    padding-top: 1px;
+    padding-bottom: 1px;
+    padding-left: 2%;
+    padding-right: 2%;
+}
