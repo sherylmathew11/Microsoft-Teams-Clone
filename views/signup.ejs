@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <title>Sign Up</title>
+    <style>
+        
+    </style>
+</head>
+<body>
+    
+    <div class="section-top">
+        <div class="overlay"></div>       
+        <div class="container">
+            <div class="row"><div class="col-md-6" id="mainHeading"><h1>Teams Clone</h5></div></div>
+            <div class="row">    
+                <div class="col-md-6">
+                    <div class="card">
+                        <form action="/signup" method="POST" class="box">
+                            <h1>Sign Up</h1>
+                            <p class="text-muted">
+                                Please create a username and password!
+                            </p> 
+                            <input type="text" id="username" name="username" placeholder="Username" required> 
+                            <input type="password" id="password" name="password" placeholder="Password" autocomplete="on" required> 
+                            <input type="submit" name="" value="Sign Up">
+                            <a href="/">Already a member? Sign in</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var slideImg = document.getElementById("slideImg");
+        var images=new Array(
+            "images/img1.jpg",
+            "images/img2.jpg",
+            "images/img3.jpg",
+            "images/img4.jpg",
+            "images/img5.jpg"
+        );
+        var len = images.length;
+        var i=0;
+        function slider() {
+            if(i>len-1){
+                i=0;
+            }
+            slideImg.src=images[i];
+            i++;
+            setTimeout('slider()',2000);
+        }
+    </script>
+</body>
+</html>
