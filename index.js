@@ -49,7 +49,7 @@ app.use(session({
     secret, 
     resave: false,
     saveUninitialized: false,
-    store: new MongoStore.create(dbUrl)
+    store: new MongoDBStore.create(dbUrl)
 }));
 
 const requireLogin = (req, res, next) => {
