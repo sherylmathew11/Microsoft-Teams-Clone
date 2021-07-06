@@ -7,7 +7,7 @@ const User = require('./models/user');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const session = require('express-session');
-const MongoDBStore = require("connect-mongo")(session);
+const MongoStore = require("connect-mongo")(session);
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
 const { v4: uuidV4 } = require('uuid')
@@ -35,21 +35,21 @@ app.use(express.urlencoded({extended: true}));
 
 app.use(express.static('public')); 
 const secret = process.env.SECRET || 'microsoftengage';
-const store = new MongoDBStore({
-    url: dbUrl,
-    secret,
-    touchAfter: 24 * 60 * 60
-});
-store.on("error",function (e) {
-    console.log("Session store error",e)
-})
+// const store = new MongoDBStore({
+//     url: dbUrl,
+//     secret,
+//     touchAfter: 24 * 60 * 60
+// });
+// store.on("error",function (e) {
+//     console.log("Session store error",e)
+// })
 
 //telling express to pull the client script from the public folder
 app.use(session({ 
-    store,
     secret, 
     resave: false,
-    saveUninitialized: false 
+    saveUninitialized: false,
+    store: MongoStore.create(options)
 }));
 
 const requireLogin = (req, res, next) => {
