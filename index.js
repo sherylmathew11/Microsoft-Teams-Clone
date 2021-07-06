@@ -1,9 +1,13 @@
+if (process.env.NODE_ENV !== "production") {
+    require('dotenv').config();
+}
 const express = require('express');
 const app = express();
 const User = require('./models/user');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const session = require('express-session');
+const MongoDBStore = require("connect-mongo")(session);
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
 const { v4: uuidV4 } = require('uuid')
@@ -12,8 +16,9 @@ const peerServer = ExpressPeerServer(server, {
   debug: true
 });
 var name;
+const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/authDemo';
 // var check=[];
-mongoose.connect('mongodb://localhost:27017/authDemo', {useNewUrlParser: true, useUnifiedTopology: true})
+mongoose.connect(dbUrl, {useNewUrlParser: true, useUnifiedTopology: true})
     .then(() => {
         console.log('MONGO CONNECTED')
     })
@@ -27,9 +32,22 @@ app.set('views', 'views');
 
 app.use(express.urlencoded({extended: true}));
 // app.use(express.static(__dirname + '/public/'));
-app.use(express.static('public')); //telling express to pull the client script from the public folder
+
+app.use(express.static('public')); 
+const secret = process.env.SECRET || 'microsoftengage';
+const store = new MongoDBStore({
+    url: dbUrl,
+    secret,
+    touchAfter: 24 * 60 * 60
+});
+store.on("error",function (e) {
+    console.log("Session store error",e)
+})
+
+//telling express to pull the client script from the public folder
 app.use(session({ 
-    secret : 'microsoftengage', 
+    store,
+    secret, 
     resave: false,
     saveUninitialized: false 
 }));
@@ -139,7 +157,7 @@ io.on('connection', socket => {
     })
 });
 })
-server.listen(process.env.PORT||3000)  //run the server on port 3000
-// server.listen(3000, () => {
-//     console.log("SERVING YOUR APP!")
-// })
+const port = process.env.PORT || 3000  //run the server on port 3000
+index.listen(port, () => {
+    console.log(`SERVING YOUR APP in ${port}`)
+})
