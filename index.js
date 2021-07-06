@@ -35,21 +35,22 @@ app.use(express.urlencoded({extended: true}));
 
 app.use(express.static('public')); 
 const secret = process.env.SECRET || 'microsoftengage';
-// const store = new MongoDBStore({
-//     url: dbUrl,
-//     secret,
-//     touchAfter: 24 * 60 * 60
-// });
-// store.on("error",function (e) {
-//     console.log("Session store error",e)
-// })
+const store = new MongoDBStore({
+    url: dbUrl,
+    secret,
+    touchAfter: 24 * 60 * 60
+});
+store.on("error",function (e) {
+    console.log("Session store error",e)
+})
 
 //telling express to pull the client script from the public folder
 app.use(session({ 
     secret, 
+    store,
     resave: false,
     saveUninitialized: false,
-    store: new MongoStore.create(options)
+    // store: new MongoStore.create(options)
 }));
 
 const requireLogin = (req, res, next) => {
