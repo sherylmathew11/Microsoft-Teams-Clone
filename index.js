@@ -7,7 +7,7 @@ const User = require('./models/user');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const session = require('express-session');
-const MongoDBStore = require("connect-mongo");
+const MongoStore = require("connect-mongo");
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
 const { v4: uuidV4 } = require('uuid')
@@ -49,7 +49,7 @@ app.use(session({
     secret, 
     resave: false,
     saveUninitialized: false,
-    store: new MongoDBStore.create(dbUrl)
+    store: MongoStore.create(dbUrl)
 }));
 
 const requireLogin = (req, res, next) => {
