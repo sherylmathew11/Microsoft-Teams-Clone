@@ -160,6 +160,6 @@ io.on('connection', socket => {
 });
 })
 const port = process.env.PORT || 3000  //run the server on port 3000
-app.listen(port, () => {
+server.listen(port, () => {
     console.log(`SERVING YOUR APP in ${port}`)
 })
