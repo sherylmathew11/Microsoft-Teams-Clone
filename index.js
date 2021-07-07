@@ -66,6 +66,7 @@ app.get('/signup', (req, res) => {
 app.post('/signup', async (req,res) => {
     // res.send(req.body)
     const { password, username } = req.body;
+    app.locals.name=req.body.username;
     const hash = await bcrypt.hash(password, 12);
     const user = new User({
         username,
@@ -75,6 +76,7 @@ app.post('/signup', async (req,res) => {
     req.session.user_id = user._id;
     res.redirect('/secret')
     // res.send(hash);
+    return name;
 })
 
 app.get('/' ,(req, res) => {
