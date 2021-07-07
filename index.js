@@ -66,6 +66,7 @@ app.get('/signup', (req, res) => {
 app.post('/signup', async (req,res) => {
     // res.send(req.body)
     const { password, username } = req.body;
+    check=req.body.username;
     app.locals.name=req.body.username;
     const hash = await bcrypt.hash(password, 12);
     const user = new User({
