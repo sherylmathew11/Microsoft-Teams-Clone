@@ -1,50 +1,38 @@
 if (process.env.NODE_ENV !== "production") {
     require('dotenv').config();
 }
-const express = require('express');
+const express = require('express'); //for creating express server
 const app = express();
 const User = require('./models/user');
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
-const session = require('express-session');
+const mongoose = require('mongoose'); //odm library for mongodb and nodejs
+const bcrypt = require('bcrypt'); //for hashing
+const session = require('express-session'); //to stay  logged in
 const MongoStore = require("connect-mongo");
 const server = require('http').Server(app);
-const io = require('socket.io')(server);
+const io = require('socket.io')(server); //for real time communication - to manage communication between users 
 const { v4: uuidV4 } = require('uuid')
 var { ExpressPeerServer } = require('peer');
 const peerServer = ExpressPeerServer(server, {
   debug: true
 });
-var name;
+var name;  
 const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/authDemo';
-// var check=[];
 mongoose.connect(dbUrl, {useNewUrlParser: true, useUnifiedTopology: true})
     .then(() => {
-        console.log('MONGO CONNECTED')
+        console.log('MONGO CONNECTED') //if connected to mongodb
     })
     .catch(err => {
-        console.log("MONGO CONNECTION ERROR!")
+        console.log("MONGO CONNECTION ERROR!") //if there was a problem connecting to mongodb
         console.log(err)
     });
 
-app.set('view engine', 'ejs');
+app.set('view engine', 'ejs'); //tell Express we are using EJS
 app.set('views', 'views');
-
-app.use(express.urlencoded({extended: true}));
-// app.use(express.static(__dirname + '/public/'));
-
-app.use(express.static('public')); 
+app.use(express.urlencoded({extended: true})); //parses incoming requests with urlencoded payloads
+app.use(express.static('public')); //tell express to pull the client script from the public folder
+app.use('/peerjs', peerServer);
 const secret = process.env.SECRET || 'microsoftengage';
-// const store = new MongoDBStore({
-//     url: dbUrl,
-//     secret,
-//     touchAfter: 24 * 60 * 60
-// });
-// store.on("error",function (e) {
-//     console.log("Session store error",e)
-// })
 
-//telling express to pull the client script from the public folder
 app.use(session({ 
     secret, 
     resave: false,
@@ -54,83 +42,63 @@ app.use(session({
 
 const requireLogin = (req, res, next) => {
     if(!req.session.user_id){
-        return res.redirect('/')
+        return res.redirect('/')  //if not logged in, redirect to login page
     }
-    next();
+    next(); //if logged in, do next step
 }
 
 app.get('/signup', (req, res) => {
-    res.render('signup')
+    res.render('signup') //signup page is rendered
 })
 
 app.post('/signup', async (req,res) => {
-    // res.send(req.body)
-    const { password, username } = req.body;
-    check=req.body.username;
-    app.locals.name=req.body.username;
-    const hash = await bcrypt.hash(password, 12);
-    const user = new User({
+    const { password, username } = req.body; 
+    check=req.body.username; //setting check to username for the logged in user
+    app.locals.name=req.body.username; //similarly, setting name = username
+    const hash = await bcrypt.hash(password, 12);   //hash password, 12 number of salt rounds
+    const user = new User({ 
         username,
         password: hash
     })
-    await user.save();
+    await user.save(); //saving username and hashed password to db
     req.session.user_id = user._id;
-    res.redirect('/secret')
-    // res.send(hash);
-    return name;
+    res.redirect('/secret') //redirecting to the main page
+    return name,check;
 })
 
 app.get('/' ,(req, res) => {
-    res.render('login')
+    res.render('login') //rendering login page
 })
-app.post('/' , async (req, res) => {
+app.post('/' , async (req, res) => { 
     const { username, password } = req.body;
+    //validating the user
     const foundUser = await User.findAndValidate(username, password);
-    // const user = await User.findOne({username});
-    // const validPassword = await bcrypt.compare(password, user.password);
     check=req.body.username;
     app.locals.name=req.body.username;
     if (foundUser) {
         req.session.user_id = foundUser._id;
-        res.redirect('/secret')
-        // const user = document.getElementById('user');   //calling id #video-grid from room.ejs
-        // document.getElementById("id").innerHTML = "Hello " + username;
-        // console.log(user)
+        res.redirect('/secret') //redirecting to main page
     }
     else{
-        res.redirect('/')
+        res.redirect('/') //redirecting to login page
     }
-    // return check;
     return name,check;
 })
 
 app.post('/logout', (req,res) => {
-    req.session.user_id = null;
-    // req.session.destroy();
-    res.redirect('/');
+    req.session.user_id = null; //closing express session and logging out
+    res.redirect('/'); //redirecting to login page
 })
 
 app.get('/secret', requireLogin ,  (req, res) => {
-    // if (!req.session.user_id){
-    //     return res.redirect('/login')
-    // }
-    // document.getElementById("id").innerHTML = "Hello " + req.body.username;
-    // console.log('chekc',myVar);
-    // console.log(username);
-    res.render('secret')
+    res.render('secret') //rendering the main page (if logged in)
 })
-
-app.use('/peerjs', peerServer);
 
 //if they join the base link, generate a random uuid and send them to a new room with that uuid
 app.get('/room', (req, res) => {
-    
     res.redirect(`/${uuidV4()}`);
-    // res.render('room')
-    // res.status(200).send("Check done");
+
 })
-
-
 
 //if they join a specific room then render that room
 app.get('/:room', requireLogin , (req, res) => {
@@ -140,9 +108,6 @@ app.get('/:room', requireLogin , (req, res) => {
 
 //someone connects to the server
 io.on('connection', socket => {
-//   console.log('chekc',check);
-  
-
   //someone attempts to join the room
     socket.on('join-room', (roomId,userId) => {
         socket.join(roomId);  //join the room
@@ -154,6 +119,7 @@ io.on('connection', socket => {
             io.to(roomId).emit('createMessage', message, check,userId)
         });
      
+    //when someone leaves the room
     socket.on('disconnect', () => {
             console.log('disconnecting')
             socket.broadcast.to(roomId).emit('user-disconnected', userId);

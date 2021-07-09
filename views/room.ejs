@@ -12,7 +12,7 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script>
-      const ROOM_ID = "<%= roomId %>"  //setting the ROOM_ID variable to the roomId passed in by server.js
+      const ROOM_ID = "<%= roomId %>"  //setting the ROOM_ID variable to the roomId passed in by index.js
     </script>
    <title>Microsoft Teams Clone</title>
    <style>
@@ -43,11 +43,6 @@
             </div>
          </div>
          <div class="main__controls__block">
-            <!-- <div class="main__controls__button">
-               <div onclick="screenSharing()" class="main__controls__button main__share_button"></div>
-               <i class="fas fa-shield-alt"></i>
-               <span>ScreenRecord</span>
-            </div> -->
             <div class="main__controls__button">
                <i class="fas fa-user-friends"></i>
                <span>Participants</span>
@@ -86,7 +81,6 @@
       </div>
    </div>
     <div id="video-grid"></div>
-    <script src="index.js"></script>
     <script src="script.js" defer></script>
 </body>
 </html>

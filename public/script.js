@@ -52,6 +52,7 @@ navigator.mediaDevices.getUserMedia({     //prompts the user for permission to u
       text.val('')
     }
   });
+  //pass message from socket
   socket.on("createMessage", (message,check) => {
     console.log('createmesg',message);
     $('ul').append(`<li class="message"><b>${check}</b><br/>${message}</li>`);
@@ -60,13 +61,13 @@ navigator.mediaDevices.getUserMedia({     //prompts the user for permission to u
 }).catch((err) =>{
   console.log(err.name + ": " + err.message);
 });
-
+//user disconnect from room
 socket.on('user-disconnected', userId =>{
   console.log('disconnect user id', userId)
   if (peers[userId]) peers[userId].close()  
 })
-
-peer.on('open' , id => { //when we first open the app, have us join a room
+//when we first open the app, have us join a room
+peer.on('open' , id => { 
   socket.emit('join-room', ROOM_ID, id);
 })
 
@@ -96,12 +97,12 @@ const addVideoStream=(video, stream) => {
   })
   videoGrid.append(video) //append video element to videoGrid
 }
-
+//scroll chat block
 const scrollToBottom = () => {
   var d = $('.main__chat_window');
   d.scrollTop(d.prop("scrollHeight"));
 }
-
+//Mute/Unmute by user
 const muteUnmute = () => {
   const enabled = myVideoStream.getAudioTracks()[0].enabled;
   if (enabled) {
@@ -112,6 +113,7 @@ const muteUnmute = () => {
     myVideoStream.getAudioTracks()[0].enabled = true;
   }
 }
+//play/stop video by user
 const playStop = () => {
   console.log('object')
   let enabled = myVideoStream.getVideoTracks()[0].enabled;
@@ -155,15 +157,16 @@ const setPlayVideo = () => {
   `
   document.querySelector('.main__video_button').innerHTML = html;
 }
-
-// function joinMeeting() {
-//   var x = document.getElementById("joinMeetingForm");
-//   if (x.style.display === "none") {
-//     x.style.display = "block";
-//   } else {
-//     x.style.display = "none";
-//   }
-// }
+//Join Meeting Button function
+function joinMeeting() {
+  var x = document.getElementById("joinMeetingForm");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+}
+//After URL paste - Join button redirect
 function joinLink(input) {
   window.location.href= input
 }
