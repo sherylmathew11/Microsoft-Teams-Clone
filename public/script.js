@@ -32,14 +32,12 @@ navigator.mediaDevices.getUserMedia({     //prompts the user for permission to u
     call.answer(stream); //stream them our audio/video
     const video = document.createElement('video'); //create a video tag for them
     call.on('stream', userVideoStream => { //when we receive their stream
-      console.log('call worked')
       addVideoStream(video, userVideoStream) //display their video to ourslves
     })
   })
   
   // socket.emit('join-room', ROOM_ID);
   socket.on('user-connected',(userId) => { //if a new user connects
-    console.log("user-connected")
     connectToNewUser(userId,stream);
   })
 
@@ -48,14 +46,12 @@ navigator.mediaDevices.getUserMedia({     //prompts the user for permission to u
   $('html').keydown((e) =>{                                         //keypress any input
     if (e.which == 13 && text.val().length !== 0) {                 //13->enter and text=empty
       socket.emit('message', text.val());
-      console.log(text.val())
       text.val('')
     }
   });
   //pass message from socket
-  socket.on("createMessage", (message,check) => {
-    console.log('createmesg',message);
-    $('ul').append(`<li class="message"><b>${check}</b><br/>${message}</li>`);
+  socket.on("createMessage", (message,b) => {
+    $('ul').append(`<li class="message"><b>${b}</b><br/>${message}</li>`);
     scrollToBottom()
   })
 }).catch((err) =>{
@@ -63,7 +59,6 @@ navigator.mediaDevices.getUserMedia({     //prompts the user for permission to u
 });
 //user disconnect from room
 socket.on('user-disconnected', userId =>{
-  console.log('disconnect user id', userId)
   if (peers[userId]) peers[userId].close()  
 })
 //when we first open the app, have us join a room
@@ -74,21 +69,18 @@ peer.on('open' , id => {
 
 const connectToNewUser = (userId,stream)  =>{ //this runs when someone joins our room
   const call = peer.call(userId, stream) //call the user who just joined
-  console.log("connectNewUser")
   //add their video
   const video = document.createElement('video') 
-  console.log('inside connectnew user')
   call.on('stream', userVideoStream => {
-    console.log("stream connectuser")
     addVideoStream(video, userVideoStream)
   })
   // if they leave, remove their video
   call.on('close', () => {
-    console.log("close connectuser")
     video.remove()
   })
 
   peers[userId] = call
+  
 }
 const addVideoStream=(video, stream) => {
     video.srcObject = stream; //media stream from camera and mic is assigned to <video> element

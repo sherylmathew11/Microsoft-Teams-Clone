@@ -15,8 +15,9 @@ var { ExpressPeerServer } = require('peer');
 const peerServer = ExpressPeerServer(server, {
   debug: true
 });
-var name;  
-const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/authDemo';
+var name,b;  
+const uname={};
+const dbUrl =  process.env.DB_URL || 'mongodb://localhost:27017/authDemo';
 mongoose.connect(dbUrl, {useNewUrlParser: true, useUnifiedTopology: true})
     .then(() => {
         console.log('MONGO CONNECTED') //if connected to mongodb
@@ -111,18 +112,20 @@ io.on('connection', socket => {
   //someone attempts to join the room
     socket.on('join-room', (roomId,userId) => {
         socket.join(roomId);  //join the room
-        console.log('userid' +userId)
+    
+        uname[userId]=check;
         socket.broadcast.to(roomId).emit('user-connected',userId); //tell everyone else in the room that we joined
     // messages
         socket.on('message', (message) => {
         //send message to the same room
-            io.to(roomId).emit('createMessage', message, check,userId)
+            
+            b=uname[userId]
+            io.to(roomId).emit('createMessage', message,b)
         });
      
     //when someone leaves the room
     socket.on('disconnect', () => {
-            console.log('disconnecting')
-            socket.broadcast.to(roomId).emit('user-disconnected', userId);
+            socket.broadcast.to(roomId).emit('user-disconnected', uname[userId]);
     })
 });
 })
